@@ -16,16 +16,16 @@ Gem::Specification.new do |gem|
   gem.require_paths = %w[ lib ]
 
   gem.add_dependency 'hashie'
-  gem.add_dependency 'faraday', '~> 0.9.0'
+  gem.add_dependency 'faraday'
   gem.add_dependency 'multi_json',  '>= 1.7.5', '< 2.0'
-  gem.add_dependency 'faraday_middleware', '~> 0.9.0'
+  gem.add_dependency 'faraday_middleware'
   gem.add_dependency 'nokogiri', '>= 1.5.2'
   gem.add_dependency 'simple_oauth'
 
   gem.add_development_dependency 'rspec', '>= 0'
   gem.add_development_dependency 'rack-test'
-  gem.add_development_dependency 'webmock', '~> 1.8.0'
-  gem.add_development_dependency 'vcr', '~> 2.2.0'
+  gem.add_development_dependency 'webmock'
+  gem.add_development_dependency 'vcr'
   gem.add_development_dependency 'simplecov', '~> 0.6.1'
   gem.add_development_dependency 'rake'
   gem.add_development_dependency 'bundler'
