@@ -1,10 +1,10 @@
 # encoding: utf-8
 
-require 'faraday'
+require "faraday"
+require "multi_json"
 
 module BitBucket
   class Response::Jsonize < Response
-    dependency 'multi_json'
 
     define_parser do |body|
       if MultiJson.respond_to?(:load)
@@ -16,15 +16,15 @@ module BitBucket
 
     def parse(body)
       case body
-      when ''
+      when ""
         nil
-      when 'true'
+      when "true"
         true
-      when 'false'
+      when "false"
         false
       else
         self.class.parser.call body
       end
     end
-  end # Response::Jsonize
-end # BitBucket
+  end
+end

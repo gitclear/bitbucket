@@ -1,14 +1,13 @@
 # encoding: utf-8
 
-require 'faraday'
+require "faraday"
+require "multi_json"
 
 module BitBucket
   class Request::Jsonize < Faraday::Middleware
 
-    CONTENT_TYPE = 'Content-Type'.freeze
-    MIME_TYPE    = 'application/json'.freeze
-
-    dependency 'multi_json'
+    CONTENT_TYPE = "Content-Type".freeze
+    MIME_TYPE    = "application/json".freeze
 
     def call(env)
       if request_with_body?(env)
@@ -38,9 +37,9 @@ module BitBucket
 
     def request_type(env)
       type = env[:request_headers][CONTENT_TYPE].to_s
-      type = type.split(';', 2).first if type.index(';')
+      type = type.split(";", 2).first if type.index(";")
       type
     end
 
-  end # Request::Jsonize
-end # BitBucket
+  end
+end

@@ -1,10 +1,10 @@
 # encoding: utf-8
 
-require 'faraday'
+require "faraday"
+require "nokogiri"
 
 module BitBucket
   class Response::Xmlize < Response
-    dependency 'nokogiri'
 
     define_parser do |body|
       ::Nokogiri::XML body
@@ -12,15 +12,15 @@ module BitBucket
 
     def parse(body)
       case body
-      when ''
+      when ""
         nil
-      when 'true'
+      when "true"
         true
-      when 'false'
+      when "false"
         false
       else
         self.class.parser.call body
       end
     end
-  end # Response::Xmlize
-end # BitBucket
+  end
+end
