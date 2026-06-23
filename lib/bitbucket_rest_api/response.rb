@@ -16,13 +16,12 @@ module BitBucket
       @parser = block
     end
 
-    # Replaces the behavior of Faraday 1.x's Faraday::Response::Middleware#on_complete, which was removed in Faraday 2.
-    # Matches its original logic: call parse when body is non-nil and not an empty string.
+    # Replaces the behavior of Faraday 1.x's Faraday::Response::Middleware#on_complete,
+    # which was removed in Faraday 2. Delegates to each subclass's parse method
+    # for all non-nil bodies, letting the parser decide how to handle edge cases
+    # (e.g., Jsonize/Xmlize map "" to nil).
     def on_complete(env)
-      body = env[:body]
-      if respond_to?(:parse, true) && !body.nil? && !(body.respond_to?(:to_str) && body.empty?)
-        env[:body] = parse(body)
-      end
+      env[:body] = parse(env[:body]) if respond_to?(:parse, true) && !env[:body].nil?
     end
 
     def response_type(env)

@@ -28,8 +28,8 @@ describe BitBucket::Response do
 
     context "when body is an empty string" do
       let(:input) { "" }
-      let(:expected_body) { "" }
-      include_examples "parses body via on_complete", "skips parsing and leaves body unchanged"
+      let(:expected_body) { nil }
+      include_examples "parses body via on_complete", "delegates to parser which returns nil"
     end
 
     context "when body is nil" do
