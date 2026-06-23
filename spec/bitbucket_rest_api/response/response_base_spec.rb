@@ -19,16 +19,23 @@ describe BitBucket::Response do
       include_examples "parses body via on_complete", "parses JSON into a hash"
     end
 
-    context "when body is already parsed" do
-      let(:input) { { "key" => "value" } }
-      let(:expected_body) { input }
-      include_examples "parses body via on_complete", "leaves the body unchanged"
+    context "when body is a hash (Jsonize only handles strings)" do
+      it "raises an error because MultiJson.load expects a string" do
+        env = { body: { "key" => "value" }, response_headers: response_headers }
+        expect { jsonize.on_complete(env) }.to raise_error(NoMethodError)
+      end
     end
 
     context "when body is an empty string" do
       let(:input) { "" }
+      let(:expected_body) { "" }
+      include_examples "parses body via on_complete", "skips parsing and leaves body unchanged"
+    end
+
+    context "when body is nil" do
+      let(:input) { nil }
       let(:expected_body) { nil }
-      include_examples "parses body via on_complete", "returns nil"
+      include_examples "parses body via on_complete", "skips parsing and leaves body unchanged"
     end
 
     context 'when body is "true"' do
@@ -42,17 +49,26 @@ describe BitBucket::Response do
       let(:expected_body) { false }
       include_examples "parses body via on_complete", "returns boolean false"
     end
-  end
 
-  describe ".parse_response?" do
-    it "returns true when body responds to to_str" do
-      env = { body: "string body" }
-      expect(jsonize.parse_response?(env)).to eq(true)
-    end
+    context "when Mashify processes a hash body" do
+      let(:mashify) { BitBucket::Response::Mashify.new }
+      let(:name_one) { "one" }
+      let(:name_two) { "two" }
 
-    it "returns false when body does not respond to to_str" do
-      env = { body: { "key" => "value" } }
-      expect(jsonize.parse_response?(env)).to eq(false)
+      it "converts hash to Hashie::Mash" do
+        env = { body: { "name" => name_one }, response_headers: response_headers }
+        mashify.on_complete(env)
+        expect(env[:body]).to be_a(Hashie::Mash)
+        expect(env[:body].name).to eq(name_one)
+      end
+
+      it "converts array of hashes to array of Hashie::Mash" do
+        env = { body: [{ "name" => name_one }, { "name" => name_two }], response_headers: response_headers }
+        mashify.on_complete(env)
+        expect(env[:body][0]).to be_a(Hashie::Mash)
+        expect(env[:body][0].name).to eq(name_one)
+        expect(env[:body][1].name).to eq(name_two)
+      end
     end
   end
 end
