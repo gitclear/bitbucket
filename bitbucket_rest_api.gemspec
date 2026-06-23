@@ -17,7 +17,7 @@ Gem::Specification.new do |gem|
   gem.files = Dir["Rakefile", "{features,lib,spec}/**/*", "README*", "LICENSE*"]
   gem.require_paths = %w[ lib ]
 
-  gem.add_dependency "faraday", ">= 2.0"
+  gem.add_dependency "faraday", ">= 2.14.3" # earliest version fixing CVE from faraday_middleware ~> 1.0 constraint
   gem.add_dependency "faraday-multipart"
   gem.add_dependency "faraday-oauth1"
   gem.add_dependency "hashie"
