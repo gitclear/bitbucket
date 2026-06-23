@@ -1,10 +1,10 @@
 # encoding: utf-8
 
-require 'faraday'
+require "faraday"
+require "hashie/mash"
 
 module BitBucket
   class Response::Mashify < Response
-    dependency 'hashie/mash'
 
     define_parser do |body|
       ::Hashie::Mash.new body
@@ -20,5 +20,5 @@ module BitBucket
         body
       end
     end
-  end # Response::Mashify
-end # BitBucket
+  end
+end
