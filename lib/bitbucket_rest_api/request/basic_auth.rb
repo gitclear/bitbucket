@@ -7,7 +7,7 @@ module BitBucket
   module Request
     class BasicAuth < Faraday::Middleware
       def call(env)
-        env[:request_headers].merge!("Authorization" => "Basic #{ @auth }\"")
+        env[:request_headers].merge!("Authorization" => "Basic #{ @auth }")
 
         @app.call env
       end

@@ -6,13 +6,15 @@ describe BitBucket::Request::BasicAuth do
   let(:login) { "user" }
   let(:password) { "pass" }
   let(:credentials) { "#{ login }:#{ password }" }
-  let(:expected_header) { "Basic #{ Base64.strict_encode64(credentials) }\"" }
+  let(:expected_header) { "Basic #{ Base64.strict_encode64(credentials) }" }
 
   shared_examples "adds basic auth header" do
-    it "sets the Authorization header with base64-encoded credentials" do
+    it "sets the Authorization header with base64-encoded credentials and no trailing quote" do
       env = { request_headers: {} }
       @middleware.call(env)
       expect(env[:request_headers]["Authorization"]).to eq(expected_header)
+      # Guards against a prior bug where the header had a trailing double-quote
+      expect(env[:request_headers]["Authorization"]).not_to end_with('"')
     end
   end
 

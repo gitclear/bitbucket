@@ -28,7 +28,7 @@ module BitBucket
     def default_options(options = {})
       {
         headers: { USER_AGENT => user_agent },
-        ssl: { verify: false },
+        ssl: { verify: true },
         url: options.fetch(:endpoint) { BitBucket.endpoint }
       }.merge(options)
     end
@@ -67,6 +67,7 @@ module BitBucket
 
     def clear_cache
       @connection = nil
+      @stack = nil
     end
 
     def caching?

@@ -36,6 +36,11 @@ describe BitBucket::Connection do
       expect(options[:url]).to eq(BitBucket::Configuration::DEFAULT_ENDPOINT)
     end
 
+    it "enables SSL verification by default" do
+      options = api.default_options
+      expect(options[:ssl][:verify]).to eq(true)
+    end
+
     it "allows overriding the endpoint" do
       custom_endpoint = "https://custom.api.example.com"
       options = api.default_options(endpoint: custom_endpoint)
@@ -50,7 +55,21 @@ describe BitBucket::Connection do
 
     it "uses the default endpoint" do
       conn = api.connection
-      expect(conn.url_prefix.to_s).to eq("#{ BitBucket::Configuration::DEFAULT_ENDPOINT }/")
+      expect(conn.url_prefix.to_s).to eq("#{BitBucket::Configuration::DEFAULT_ENDPOINT}/")
+    end
+  end
+
+  describe "#clear_cache" do
+    it "resets both connection and stack so subsequent options take effect" do
+      # Build a default stack (without raw)
+      default_handlers = Faraday::RackBuilder.new(&api.default_middleware).handlers.map(&:klass)
+      expect(default_handlers).to include(BitBucket::Response::Mashify)
+
+      api.clear_cache
+
+      # Build a raw stack -- should rebuild without Mashify
+      raw_handlers = Faraday::RackBuilder.new(&api.default_middleware(raw: true)).handlers.map(&:klass)
+      expect(raw_handlers).not_to include(BitBucket::Response::Mashify)
     end
   end
 end
