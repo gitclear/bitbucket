@@ -50,7 +50,7 @@ module BitBucket
           unless params.empty?
             # data = extract_data_from_params(params)
             # request.body = MultiJson.dump(data)
-            request.body = MultiJson.dump(params)
+            request.body = MultiJson.generate(params)
           end
         end
       end
