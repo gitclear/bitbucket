@@ -49,8 +49,8 @@ module BitBucket
           request.path = path
           unless params.empty?
             # data = extract_data_from_params(params)
-            # request.body = MultiJSON.generate(data)
-            request.body = MultiJSON.generate(params)
+            # request.body = MultiJson.dump(data)
+            request.body = MultiJson.dump(params)
           end
         end
       end

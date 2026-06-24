@@ -7,7 +7,11 @@ module BitBucket
   class Response::Jsonize < Response
 
     define_parser do |body|
-      MultiJSON.parse body
+      if MultiJson.respond_to?(:load)
+        MultiJson.load body
+      else
+        MultiJson.decode body
+      end
     end
 
     def parse(body)
