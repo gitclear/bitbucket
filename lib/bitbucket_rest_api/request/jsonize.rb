@@ -18,7 +18,7 @@ module BitBucket
     end
 
     def encode_body(env)
-      MultiJson.generate env[:body]
+      MultiJSON.generate env[:body]
     end
 
     def request_with_body?(env)

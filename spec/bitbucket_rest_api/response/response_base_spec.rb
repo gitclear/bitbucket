@@ -15,12 +15,12 @@ describe BitBucket::Response do
 
     context "when body is a JSON string" do
       let(:input) { '{"key":"value"}' }
-      let(:expected_body) { MultiJson.load(input) }
+      let(:expected_body) { MultiJSON.parse(input) }
       include_examples "parses body via on_complete", "parses JSON into a hash"
     end
 
     context "when body is a hash (Jsonize only handles strings)" do
-      it "raises an error because MultiJson.load expects a string" do
+      it "raises an error because MultiJSON.parse expects a string" do
         env = { body: { "key" => "value" }, response_headers: response_headers }
         expect { jsonize.on_complete(env) }.to raise_error(NoMethodError)
       end

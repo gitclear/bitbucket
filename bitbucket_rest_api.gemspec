@@ -21,7 +21,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency "faraday-multipart"
   gem.add_dependency "faraday-oauth1"
   gem.add_dependency "hashie"
-  gem.add_dependency "multi_json", ">= 1.7.5", "< 2.0"
+  gem.add_dependency "multi_json", ">= 1.21.1", "< 2.0"
   gem.add_dependency "nokogiri", ">= 1.5.2"
   gem.add_dependency "oauth" # required by Request::OAuth (client.oauth / client.authorizations)
   gem.add_dependency "simple_oauth"
